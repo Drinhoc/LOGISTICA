@@ -32,3 +32,7 @@ npm start
 ```
 
 Certifique-se de definir as variáveis de ambiente necessárias (vide `route-optimizer-app/backend/.env.example`).
+
+## Branches
+- `work`: branch de trabalho atual.
+- `codex/follow-project-architecture-for-web-app-yyvonq`: atualizado e alinhado com `work` para revisões.
