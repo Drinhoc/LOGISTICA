@@ -22,4 +22,9 @@ export const env = {
   JWT_EXPIRES_IN: requireEnv('JWT_EXPIRES_IN'),
   GOOGLE_MAPS_API_KEY: requireEnv('GOOGLE_MAPS_API_KEY'),
   NODE_ENV: process.env.NODE_ENV ?? 'development',
+  PORT: parseNumber(process.env.PORT, 3000),
+  DATABASE_URL: process.env.DATABASE_URL ?? '',
+  JWT_SECRET: process.env.JWT_SECRET ?? '',
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN ?? '',
+  GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY ?? '',
 };

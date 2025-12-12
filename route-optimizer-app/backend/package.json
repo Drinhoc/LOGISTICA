@@ -10,6 +10,8 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy"
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:generate": "prisma generate"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
