@@ -23,6 +23,11 @@ npm run dev
 - Frontend: `npm run build` e `npm run preview`
 
 ### Deploy no Railway
+Há um `package.json` na raiz que expõe o comando `npm start`, o qual chama o script `start.sh` (também na raiz) para instalar as dependências do backend, compilar o TypeScript e iniciar o servidor compilado. Isso ajuda o buildpack do Railway a detectar o projeto como Node e provisionar o Node/npm automaticamente.
+
+```bash
+npm start
+# ou, se preferir, execute o script diretamente
 O repositório inclui um `start.sh` na raiz para facilitar o deploy automático no Railway ou em qualquer buildpack que espere um comando de inicialização. O script instala dependências do backend, compila o TypeScript e inicia o servidor compilado:
 
 ```bash
