@@ -37,3 +37,9 @@ npm run dev
 cd route-optimizer-app/frontend
 npm run preview
 ```
+
+### Deploy no Railway / Buildpacks
+Execute o `start.sh` localizado na raiz deste monorepo (ou na raiz do app no Railway) para instalar dependências do backend, compilar TypeScript e subir o servidor compilado:
+```bash
+./start.sh
+```
