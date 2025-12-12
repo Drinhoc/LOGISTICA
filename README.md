@@ -28,6 +28,9 @@ Há um `package.json` na raiz que expõe o comando `npm start`, o qual chama o s
 ```bash
 npm start
 # ou, se preferir, execute o script diretamente
+O repositório inclui um `start.sh` na raiz para facilitar o deploy automático no Railway ou em qualquer buildpack que espere um comando de inicialização. O script instala dependências do backend, compila o TypeScript e inicia o servidor compilado:
+
+```bash
 ./start.sh
 ```
 
