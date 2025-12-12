@@ -1,0 +1,13 @@
+{
+  "name": "logistica-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "route-optimizer-app/backend",
+    "route-optimizer-app/frontend"
+  ],
+  "scripts": {
+    "start": "bash start.sh",
+    "railway": "bash start.sh"
+  }
+}
