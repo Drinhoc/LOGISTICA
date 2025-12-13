@@ -213,15 +213,17 @@ export class RoutesService {
 
               const distanceKm = (distance?.distanceMeters ?? 0) / 1000;
 
-              const payloadStop = {
+              const payloadStop: Prisma.StopCreateWithoutRouteInput = {
                 order: stopOrderCounter++,
                 title: stop.clientName,
                 address: stop.address,
                 latitude: new Prisma.Decimal(stop.location.lat),
                 longitude: new Prisma.Decimal(stop.location.lng),
                 distanceFromPreviousKm: distanceKm ? new Prisma.Decimal(distanceKm) : null,
-                assignedDriverId: driverId,
-              } satisfies Prisma.StopCreateWithoutRouteInput;
+                assignedDriver: {
+                  connect: { id: driverId },
+                },
+              };
 
               return payloadStop;
             });

@@ -36,11 +36,10 @@ const ensureJwtConfig = () => {
   }
 };
 
-const generateToken = (userId: string) => {
+const generateToken = (userId: string): string => {
   ensureJwtConfig();
-  return jwt.sign({ sub: userId }, env.JWT_SECRET, {
-    expiresIn: env.JWT_EXPIRES_IN || '1d',
-  });
+  const expiresIn = env.JWT_EXPIRES_IN || '1d';
+  return jwt.sign({ sub: userId }, env.JWT_SECRET as string, { expiresIn } as jwt.SignOptions);
 };
 
 export class AuthService {
