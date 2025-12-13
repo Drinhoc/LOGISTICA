@@ -18,6 +18,40 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
   next();
 });
 
+app.get('/', (_req: Request, res: Response) => {
+  res.json({
+    name: 'Route Optimizer API',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: {
+      health: '/health',
+      auth: {
+        register: 'POST /api/auth/register',
+        login: 'POST /api/auth/login',
+        me: 'GET /api/auth/me',
+      },
+      business: {
+        create: 'POST /api/business',
+        list: 'GET /api/business',
+        get: 'GET /api/business/:id',
+      },
+      drivers: {
+        create: 'POST /api/drivers',
+        list: 'GET /api/drivers',
+        get: 'GET /api/drivers/:id',
+        update: 'PUT /api/drivers/:id',
+        delete: 'DELETE /api/drivers/:id',
+      },
+      routes: {
+        optimize: 'POST /api/routes/optimize',
+        list: 'GET /api/routes',
+        get: 'GET /api/routes/:id',
+      },
+    },
+    documentation: 'See API_TESTING.md for usage examples',
+  });
+});
+
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok' });
 });
