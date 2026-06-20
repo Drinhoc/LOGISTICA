@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Separador de Fotos Escaneadas</title>
+  <title>Lili Split Photos</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -15,12 +15,27 @@
       padding: 40px 20px 60px;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 32px;
+    header { margin-bottom: 32px; }
+
+    .header-photos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
     }
-    header h1 { font-size: 1.7rem; font-weight: 700; }
-    header p  { color: #777; font-size: 0.95rem; margin-top: 6px; }
+    .header-photo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+      border: 3px solid #fff;
+      flex-shrink: 0;
+    }
+    .header-text { text-align: center; }
+    .header-text h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; }
+    .header-text p  { color: #777; font-size: 0.9rem; margin-top: 4px; }
+    .byline { font-size: 0.75rem; color: #bbb; margin-top: 4px; display: block; font-style: italic; }
 
     .layout {
       display: grid;
@@ -170,8 +185,15 @@
 <body>
 
   <header>
-    <h1>Separador de Fotos Escaneadas</h1>
-    <p>Faça upload dos seus scans e receba cada foto cortada num ZIP.</p>
+    <div class="header-photos">
+      <img src="/static/lili1.jpg" alt="" class="header-photo" />
+      <div class="header-text">
+        <h1>Lili Split Photos</h1>
+        <p>Faça upload dos seus scans e receba cada foto cortada num ZIP.</p>
+        <span class="byline">by: irmão supremo</span>
+      </div>
+      <img src="/static/lili2.jpg" alt="" class="header-photo" />
+    </div>
   </header>
 
   <div class="layout">
