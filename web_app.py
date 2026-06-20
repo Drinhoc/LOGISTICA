@@ -12,7 +12,7 @@ from flask import Flask, jsonify, render_template, request, send_file
 from scanner_splitter import SplitterConfig, process_scan
 
 app = Flask(__name__)
-app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024  # 100 MB per request
+app.config["MAX_CONTENT_LENGTH"] = 300 * 1024 * 1024  # 300 MB por request
 
 SUPPORTED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".bmp"}
 
@@ -42,12 +42,13 @@ def process():
         deskew=deskew,
     )
 
-    zip_buffer = io.BytesIO()
-    total_extracted = 0
     log_lines: list[str] = []
 
     def log(msg: str) -> None:
         log_lines.append(msg)
+
+    zip_buffer = io.BytesIO()
+    total_extracted = 0
 
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp = Path(tmpdir)
@@ -89,7 +90,7 @@ def process():
     zip_buffer.seek(0)
 
     if zip_buffer.getbuffer().nbytes == 0:
-        return jsonify({"error": "Nenhuma foto foi extraída.", "log": log_lines}), 422
+        return jsonify({"error": "Nenhuma foto foi extraída. Verifique os parâmetros ou os arquivos enviados.", "log": log_lines}), 422
 
     response = send_file(
         zip_buffer,
@@ -97,8 +98,8 @@ def process():
         as_attachment=True,
         download_name="fotos_separadas.zip",
     )
-    response.headers["X-Log"] = " | ".join(log_lines[-20:])
     response.headers["X-Photos-Extracted"] = str(total_extracted)
+    response.headers["X-Log"] = " | ".join(log_lines[-30:])
     return response
 
 

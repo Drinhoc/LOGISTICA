@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Separador de Fotos Escaneadas</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f5f0;
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px;
+    }
+
+    h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
+    .subtitle { color: #666; font-size: 0.95rem; margin-bottom: 32px; }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 32px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    /* Drop zone */
+    .drop-zone {
+      border: 2px dashed #bbb;
+      border-radius: 10px;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 20px;
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: #4f8ef7;
+      background: #f0f6ff;
+    }
+    .drop-zone input[type="file"] { display: none; }
+    .drop-icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .drop-label { font-size: 1rem; color: #444; }
+    .drop-hint { font-size: 0.82rem; color: #999; margin-top: 6px; }
+    #file-list { margin-top: 12px; font-size: 0.85rem; color: #555; line-height: 1.6; }
+
+    /* Params (collapsible) */
+    details { margin-bottom: 20px; }
+    summary {
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #666;
+      user-select: none;
+      list-style: none;
+    }
+    summary::before { content: "▶ "; font-size: 0.7rem; }
+    details[open] summary::before { content: "▼ "; }
+
+    .params-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .param label { display: block; font-size: 0.82rem; color: #555; margin-bottom: 4px; }
+    .param input[type="number"] {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .param-check { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #444; }
+    .param-check input { width: 16px; height: 16px; cursor: pointer; }
+
+    /* Button */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: #4f8ef7;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover:not(:disabled) { background: #2f6fd4; }
+    .btn:disabled { background: #aac4f5; cursor: not-allowed; }
+
+    /* Status */
+    #status {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      min-height: 24px;
+      text-align: center;
+      color: #444;
+    }
+    #status.error { color: #c0392b; }
+    #status.success { color: #27ae60; font-weight: 600; }
+
+    /* Progress bar */
+    #progress-wrap { margin-top: 12px; display: none; }
+    #progress-bar-bg {
+      height: 8px;
+      background: #e8e8e8;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #4f8ef7;
+      border-radius: 4px;
+      transition: width 0.3s;
+      animation: indeterminate 1.4s infinite linear;
+    }
+    @keyframes indeterminate {
+      0%   { transform: translateX(-100%); width: 60%; }
+      100% { transform: translateX(200%); width: 60%; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Separador de Fotos Escaneadas</h1>
+  <p class="subtitle">Faça upload dos seus scans e receba as fotos já cortadas num ZIP.</p>
+
+  <div class="card">
+    <form id="upload-form">
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" id="file-input" name="scans" accept=".jpg,.jpeg,.png,.tif,.tiff,.bmp" multiple />
+        <div class="drop-icon">🖼️</div>
+        <div class="drop-label">Clique ou arraste os scans aqui</div>
+        <div class="drop-hint">JPG, PNG, TIFF, BMP — múltiplos arquivos aceitos</div>
+        <div id="file-list"></div>
+      </div>
+
+      <details>
+        <summary>Parâmetros avançados</summary>
+        <div class="params-grid">
+          <div class="param">
+            <label>Margem extra (px)</label>
+            <input type="number" name="margin_px" value="20" min="0" max="200" />
+          </div>
+          <div class="param">
+            <label>Área mínima detectada</label>
+            <input type="number" name="min_area" value="20000" min="1000" step="1000" />
+          </div>
+          <div class="param">
+            <label>Threshold detecção (1–254)</label>
+            <input type="number" name="threshold" value="45" min="1" max="254" />
+          </div>
+          <div class="param" style="display:flex;flex-direction:column;gap:10px;justify-content:center;">
+            <label class="param-check">
+              <input type="checkbox" name="black_background" value="true" checked />
+              Fundo preto/escuro
+            </label>
+            <label class="param-check">
+              <input type="checkbox" name="deskew" value="true" checked />
+              Corrigir rotação
+            </label>
+          </div>
+        </div>
+      </details>
+
+      <button class="btn" type="submit" id="submit-btn" disabled>
+        Processar e baixar ZIP
+      </button>
+    </form>
+
+    <div id="progress-wrap">
+      <div id="progress-bar-bg"><div id="progress-bar"></div></div>
+    </div>
+    <div id="status"></div>
+  </div>
+
+  <script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const fileList  = document.getElementById('file-list');
+    const submitBtn = document.getElementById('submit-btn');
+    const form      = document.getElementById('upload-form');
+    const status    = document.getElementById('status');
+    const progressWrap = document.getElementById('progress-wrap');
+
+    let selectedFiles = [];
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      handleFiles([...e.dataTransfer.files]);
+    });
+
+    fileInput.addEventListener('change', () => handleFiles([...fileInput.files]));
+
+    function handleFiles(files) {
+      selectedFiles = files.filter(f => /\.(jpe?g|png|tiff?|bmp)$/i.test(f.name));
+      if (selectedFiles.length === 0) {
+        fileList.textContent = 'Nenhum arquivo suportado selecionado.';
+        submitBtn.disabled = true;
+        return;
+      }
+      fileList.textContent = `${selectedFiles.length} arquivo(s): ` + selectedFiles.map(f => f.name).join(', ');
+      submitBtn.disabled = false;
+      status.textContent = '';
+      status.className = '';
+    }
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      if (selectedFiles.length === 0) return;
+
+      submitBtn.disabled = true;
+      status.textContent = 'Processando, aguarde...';
+      status.className = '';
+      progressWrap.style.display = 'block';
+
+      const data = new FormData();
+      selectedFiles.forEach(f => data.append('scans', f));
+
+      // checkboxes
+      const checkboxes = form.querySelectorAll('input[type=checkbox]');
+      checkboxes.forEach(cb => {
+        if (!data.has(cb.name)) data.set(cb.name, cb.checked ? 'true' : 'false');
+        else data.set(cb.name, cb.checked ? 'true' : 'false');
+      });
+
+      // number inputs
+      form.querySelectorAll('input[type=number]').forEach(inp => data.set(inp.name, inp.value));
+
+      try {
+        const response = await fetch('/process', { method: 'POST', body: data });
+
+        progressWrap.style.display = 'none';
+
+        if (!response.ok) {
+          const json = await response.json().catch(() => ({}));
+          status.textContent = json.error || 'Erro desconhecido no servidor.';
+          status.className = 'error';
+          submitBtn.disabled = false;
+          return;
+        }
+
+        const extracted = response.headers.get('X-Photos-Extracted') || '?';
+        const blob = await response.blob();
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href = url;
+        a.download = 'fotos_separadas.zip';
+        a.click();
+        URL.revokeObjectURL(url);
+
+        status.textContent = `✅ ${extracted} foto(s) extraída(s)! Download iniciado.`;
+        status.className = 'success';
+      } catch (err) {
+        progressWrap.style.display = 'none';
+        status.textContent = 'Erro de conexão. Tente novamente.';
+        status.className = 'error';
+      }
+
+      submitBtn.disabled = false;
+    });
+  </script>
+</body>
+</html>
