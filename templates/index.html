@@ -15,52 +15,80 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 16px;
+      padding: 40px 16px 60px;
     }
 
-    h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
-    .subtitle { color: #666; font-size: 0.95rem; margin-bottom: 32px; }
+    h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; text-align: center; }
+    .subtitle { color: #666; font-size: 0.95rem; margin-bottom: 28px; text-align: center; }
 
     .card {
       background: #fff;
       border-radius: 12px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      padding: 32px;
+      padding: 28px 32px;
       width: 100%;
-      max-width: 600px;
+      max-width: 640px;
+      margin-bottom: 20px;
     }
+
+    .card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: #333;
+    }
+
+    /* Tips grid */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 480px) { .tips-grid { grid-template-columns: 1fr; } }
+
+    .tip {
+      background: #f8f8f5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #444;
+    }
+    .tip strong { display: block; color: #222; margin-bottom: 2px; font-size: 0.88rem; }
+
+    .tip.good { border-left: 3px solid #4caf50; }
+    .tip.bad  { border-left: 3px solid #e57373; }
 
     /* Drop zone */
     .drop-zone {
       border: 2px dashed #bbb;
       border-radius: 10px;
-      padding: 40px 20px;
+      padding: 36px 20px;
       text-align: center;
       cursor: pointer;
       transition: border-color 0.2s, background 0.2s;
       margin-bottom: 20px;
     }
-    .drop-zone:hover, .drop-zone.dragover {
-      border-color: #4f8ef7;
-      background: #f0f6ff;
-    }
+    .drop-zone:hover, .drop-zone.dragover { border-color: #4f8ef7; background: #f0f6ff; }
     .drop-zone input[type="file"] { display: none; }
-    .drop-icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .drop-icon { font-size: 2.2rem; margin-bottom: 8px; }
     .drop-label { font-size: 1rem; color: #444; }
-    .drop-hint { font-size: 0.82rem; color: #999; margin-top: 6px; }
-    #file-list { margin-top: 12px; font-size: 0.85rem; color: #555; line-height: 1.6; }
+    .drop-hint { font-size: 0.82rem; color: #999; margin-top: 4px; }
+    #file-list { margin-top: 10px; font-size: 0.85rem; color: #555; line-height: 1.6; }
 
-    /* Params (collapsible) */
+    /* Params */
     details { margin-bottom: 20px; }
     summary {
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: #666;
       user-select: none;
       list-style: none;
+      padding: 8px 0;
+      border-top: 1px solid #eee;
     }
-    summary::before { content: "▶ "; font-size: 0.7rem; }
-    details[open] summary::before { content: "▼ "; }
+    summary::before { content: "▶  "; font-size: 0.7rem; }
+    details[open] summary::before { content: "▼  "; }
 
     .params-grid {
       display: grid;
@@ -68,7 +96,10 @@
       gap: 14px;
       margin-top: 14px;
     }
-    .param label { display: block; font-size: 0.82rem; color: #555; margin-bottom: 4px; }
+    @media (max-width: 480px) { .params-grid { grid-template-columns: 1fr; } }
+
+    .param label { display: block; font-size: 0.82rem; color: #555; margin-bottom: 2px; }
+    .param .hint { font-size: 0.76rem; color: #999; margin-bottom: 5px; }
     .param input[type="number"] {
       width: 100%;
       padding: 7px 10px;
@@ -76,8 +107,10 @@
       border-radius: 6px;
       font-size: 0.9rem;
     }
-    .param-check { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #444; }
-    .param-check input { width: 16px; height: 16px; cursor: pointer; }
+    .param-check { display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; color: #444; }
+    .param-check input { width: 16px; height: 16px; margin-top: 2px; cursor: pointer; flex-shrink: 0; }
+    .param-check span { line-height: 1.4; }
+    .param-check .sub { display: block; font-size: 0.76rem; color: #999; }
 
     /* Button */
     .btn {
@@ -96,75 +129,103 @@
     .btn:disabled { background: #aac4f5; cursor: not-allowed; }
 
     /* Status */
-    #status {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      min-height: 24px;
-      text-align: center;
-      color: #444;
-    }
+    #status { margin-top: 16px; font-size: 0.9rem; min-height: 22px; text-align: center; color: #444; }
     #status.error { color: #c0392b; }
     #status.success { color: #27ae60; font-weight: 600; }
 
-    /* Progress bar */
-    #progress-wrap { margin-top: 12px; display: none; }
-    #progress-bar-bg {
-      height: 8px;
-      background: #e8e8e8;
-      border-radius: 4px;
-      overflow: hidden;
-    }
+    #progress-wrap { margin-top: 10px; display: none; }
+    #progress-bar-bg { height: 6px; background: #e8e8e8; border-radius: 4px; overflow: hidden; }
     #progress-bar {
       height: 100%;
-      width: 0%;
+      width: 60%;
       background: #4f8ef7;
       border-radius: 4px;
-      transition: width 0.3s;
       animation: indeterminate 1.4s infinite linear;
     }
     @keyframes indeterminate {
-      0%   { transform: translateX(-100%); width: 60%; }
-      100% { transform: translateX(200%); width: 60%; }
+      0%   { transform: translateX(-120%); }
+      100% { transform: translateX(280%); }
     }
   </style>
 </head>
 <body>
   <h1>Separador de Fotos Escaneadas</h1>
-  <p class="subtitle">Faça upload dos seus scans e receba as fotos já cortadas num ZIP.</p>
+  <p class="subtitle">Faça upload dos seus scans e receba cada foto cortada num ZIP.</p>
 
+  <!-- Dicas de preparo -->
+  <div class="card">
+    <h2>Como preparar o scan para melhores resultados</h2>
+    <div class="tips-grid">
+      <div class="tip good">
+        <strong>Use fundo preto fosco</strong>
+        Coloque uma cartolina preta fosca atrás das fotos. É o truque mais importante — o app usa o contraste entre as fotos e o fundo escuro para detectar os limites.
+      </div>
+      <div class="tip good">
+        <strong>Deixe espaço entre as fotos</strong>
+        Pelo menos 5 mm de separação entre cada foto. Se duas ficarem encostadas, o app pode tratá-las como uma só.
+      </div>
+      <div class="tip good">
+        <strong>Escaneie em 300 DPI ou mais</strong>
+        Resolução baixa dificulta a detecção de bordas. Para fotos pequenas, use 400–600 DPI.
+      </div>
+      <div class="tip good">
+        <strong>Limpe o vidro do scanner</strong>
+        Poeira e manchas viram manchas claras que o app pode confundir com fotos.
+      </div>
+      <div class="tip bad">
+        <strong>Evite fundo branco ou brilhante</strong>
+        Papel branco ou brilhante reflete luz e apaga o contraste. Se só tiver fundo claro, desative a opção "Fundo preto/escuro" nos parâmetros avançados.
+      </div>
+      <div class="tip bad">
+        <strong>Não encoste fotos na borda</strong>
+        Fotos grudadas na borda do scanner ficam sem contraste num dos lados e podem ser ignoradas ou cortadas errado.
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload -->
   <div class="card">
     <form id="upload-form">
       <div class="drop-zone" id="drop-zone">
         <input type="file" id="file-input" name="scans" accept=".jpg,.jpeg,.png,.tif,.tiff,.bmp" multiple />
         <div class="drop-icon">🖼️</div>
         <div class="drop-label">Clique ou arraste os scans aqui</div>
-        <div class="drop-hint">JPG, PNG, TIFF, BMP — múltiplos arquivos aceitos</div>
+        <div class="drop-hint">JPG · PNG · TIFF · BMP — múltiplos arquivos aceitos</div>
         <div id="file-list"></div>
       </div>
 
       <details>
-        <summary>Parâmetros avançados</summary>
+        <summary>Parâmetros avançados (clique para expandir)</summary>
         <div class="params-grid">
           <div class="param">
             <label>Margem extra (px)</label>
+            <div class="hint">Borda ao redor do corte. Aumente se estiver cortando partes da foto.</div>
             <input type="number" name="margin_px" value="20" min="0" max="200" />
           </div>
           <div class="param">
             <label>Área mínima detectada</label>
+            <div class="hint">Ignora manchas pequenas. Aumente se detectar sujeira; diminua se ignorar fotos pequenas.</div>
             <input type="number" name="min_area" value="20000" min="1000" step="1000" />
           </div>
           <div class="param">
-            <label>Threshold detecção (1–254)</label>
+            <label>Threshold (1–254)</label>
+            <div class="hint">Separação claro/escuro. Fundo preto fosco: 30–60. Fundo cinza escuro: 60–90.</div>
             <input type="number" name="threshold" value="45" min="1" max="254" />
           </div>
-          <div class="param" style="display:flex;flex-direction:column;gap:10px;justify-content:center;">
+          <div class="param" style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
             <label class="param-check">
               <input type="checkbox" name="black_background" value="true" checked />
-              Fundo preto/escuro
+              <span>
+                Fundo preto/escuro
+                <span class="sub">Desative se o fundo for branco ou claro</span>
+              </span>
             </label>
             <label class="param-check">
               <input type="checkbox" name="deskew" value="true" checked />
-              Corrigir rotação
+              <span>
+                Corrigir rotação
+                <span class="sub">Endireita fotos levemente inclinadas. Desative se o corte sair estranho.</span>
+              </span>
             </label>
           </div>
         </div>
@@ -181,8 +242,20 @@
     <div id="status"></div>
   </div>
 
+  <!-- O que vem no ZIP -->
+  <div class="card">
+    <h2>O que vem no ZIP</h2>
+    <div class="tip good" style="border-left:none; background:none; padding:0; font-size:0.87rem; line-height:1.8; color:#444;">
+      Para cada scan, uma subpasta com as fotos cortadas e um arquivo <strong>_preview.jpg</strong> mostrando o que foi detectado (retângulos verdes numerados). Se algo saiu errado, abra o preview pra entender o que o app enxergou e ajuste os parâmetros.
+      <br><br>
+      <code style="background:#f3f3f0;padding:4px 8px;border-radius:4px;font-size:0.82rem;display:inline-block;margin-top:4px;">
+        scan_001/ → scan_001_foto_01.jpg, _foto_02.jpg … _preview.jpg
+      </code>
+    </div>
+  </div>
+
   <script>
-    const dropZone = document.getElementById('drop-zone');
+    const dropZone  = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
     const fileList  = document.getElementById('file-list');
     const submitBtn = document.getElementById('submit-btn');
@@ -193,7 +266,6 @@
     let selectedFiles = [];
 
     dropZone.addEventListener('click', () => fileInput.click());
-
     dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
     dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
     dropZone.addEventListener('drop', e => {
@@ -201,7 +273,6 @@
       dropZone.classList.remove('dragover');
       handleFiles([...e.dataTransfer.files]);
     });
-
     fileInput.addEventListener('change', () => handleFiles([...fileInput.files]));
 
     function handleFiles(files) {
@@ -228,25 +299,16 @@
 
       const data = new FormData();
       selectedFiles.forEach(f => data.append('scans', f));
-
-      // checkboxes
-      const checkboxes = form.querySelectorAll('input[type=checkbox]');
-      checkboxes.forEach(cb => {
-        if (!data.has(cb.name)) data.set(cb.name, cb.checked ? 'true' : 'false');
-        else data.set(cb.name, cb.checked ? 'true' : 'false');
-      });
-
-      // number inputs
       form.querySelectorAll('input[type=number]').forEach(inp => data.set(inp.name, inp.value));
+      form.querySelectorAll('input[type=checkbox]').forEach(cb => data.set(cb.name, cb.checked ? 'true' : 'false'));
 
       try {
         const response = await fetch('/process', { method: 'POST', body: data });
-
         progressWrap.style.display = 'none';
 
         if (!response.ok) {
           const json = await response.json().catch(() => ({}));
-          status.textContent = json.error || 'Erro desconhecido no servidor.';
+          status.textContent = json.error || 'Erro no servidor.';
           status.className = 'error';
           submitBtn.disabled = false;
           return;
@@ -254,16 +316,14 @@
 
         const extracted = response.headers.get('X-Photos-Extracted') || '?';
         const blob = await response.blob();
-        const url  = URL.createObjectURL(blob);
-        const a    = document.createElement('a');
-        a.href = url;
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
         a.download = 'fotos_separadas.zip';
         a.click();
-        URL.revokeObjectURL(url);
 
         status.textContent = `✅ ${extracted} foto(s) extraída(s)! Download iniciado.`;
         status.className = 'success';
-      } catch (err) {
+      } catch {
         progressWrap.style.display = 'none';
         status.textContent = 'Erro de conexão. Tente novamente.';
         status.className = 'error';
