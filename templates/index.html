@@ -32,6 +32,7 @@
       border: 3px solid #fff;
       flex-shrink: 0;
     }
+    .header-photo[hidden] { display: none; }
     .header-text { text-align: center; }
     .header-text h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; }
     .header-text p  { color: #777; font-size: 0.9rem; margin-top: 4px; }
@@ -39,7 +40,7 @@
 
     .layout {
       display: grid;
-      grid-template-columns: 1fr 300px;
+      grid-template-columns: 300px 1fr;
       gap: 20px;
       max-width: 960px;
       margin: 0 auto;
@@ -186,17 +187,60 @@
 
   <header>
     <div class="header-photos">
-      <img src="/static/lili1.jpg" alt="" class="header-photo" />
+      <img src="/static/lili1.jpg" alt="" class="header-photo" onerror="this.hidden=true" />
       <div class="header-text">
         <h1>Lili Split Photos</h1>
         <p>Faça upload dos seus scans e receba cada foto cortada num ZIP.</p>
         <span class="byline">by: irmão supremo</span>
       </div>
-      <img src="/static/lili2.jpg" alt="" class="header-photo" />
+      <img src="/static/lili2.jpg" alt="" class="header-photo" onerror="this.hidden=true" />
     </div>
   </header>
 
   <div class="layout">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+
+      <div class="tip-card">
+        <div class="tip-title">✅ Faça assim</div>
+        <div class="tip-item">
+          <span class="icon">🖤</span>
+          <p><strong>Cartolina preta fosca atrás das fotos</strong>É o truque mais importante — o contraste entre fotos e fundo escuro é o que o app usa pra detectar.</p>
+        </div>
+        <div class="tip-item">
+          <span class="icon">↔️</span>
+          <p><strong>Espaço entre as fotos</strong>Pelo menos 5 mm de separação. Fotos encostadas podem virar um corte só.</p>
+        </div>
+        <div class="tip-item">
+          <span class="icon">🔍</span>
+          <p><strong>300 DPI ou mais</strong>Para fotos pequenas, use 400–600 DPI.</p>
+        </div>
+        <div class="tip-item">
+          <span class="icon">🧹</span>
+          <p><strong>Limpe o vidro</strong>Poeira vira manchas claras que o app pode confundir com fotos.</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-title">⚠️ Evite</div>
+        <div class="tip-item">
+          <span class="icon">⬜</span>
+          <p><strong>Fundo branco ou brilhante</strong>Apaga o contraste. Se não tiver outro jeito, desative "Fundo preto/escuro" nos parâmetros.</p>
+        </div>
+        <div class="tip-item">
+          <span class="icon">📐</span>
+          <p><strong>Fotos na borda do scanner</strong>Ficam sem contraste em um lado e podem ser ignoradas ou cortadas errado.</p>
+        </div>
+      </div>
+
+      <div class="zip-card">
+        <div class="tip-title">📦 O que vem no ZIP</div>
+        Uma pasta por scan, com as fotos cortadas e um <strong>_preview.jpg</strong> mostrando o que foi detectado. Se algo saiu errado, abra o preview pra entender.
+        <code>scan_001/<br>&nbsp;&nbsp;_foto_01.jpg<br>&nbsp;&nbsp;_foto_02.jpg<br>&nbsp;&nbsp;_preview.jpg</code>
+      </div>
+
+    </aside>
 
     <!-- ── Upload ── -->
     <div class="card">
@@ -247,48 +291,6 @@
       <div id="status"></div>
     </div>
 
-    <!-- ── Sidebar ── -->
-    <aside class="sidebar">
-
-      <div class="tip-card">
-        <div class="tip-title">✅ Faça assim</div>
-        <div class="tip-item">
-          <span class="icon">🖤</span>
-          <p><strong>Cartolina preta fosca atrás das fotos</strong>É o truque mais importante — o contraste entre fotos e fundo escuro é o que o app usa pra detectar.</p>
-        </div>
-        <div class="tip-item">
-          <span class="icon">↔️</span>
-          <p><strong>Espaço entre as fotos</strong>Pelo menos 5 mm de separação. Fotos encostadas podem virar um corte só.</p>
-        </div>
-        <div class="tip-item">
-          <span class="icon">🔍</span>
-          <p><strong>300 DPI ou mais</strong>Para fotos pequenas, use 400–600 DPI.</p>
-        </div>
-        <div class="tip-item">
-          <span class="icon">🧹</span>
-          <p><strong>Limpe o vidro</strong>Poeira vira manchas claras que o app pode confundir com fotos.</p>
-        </div>
-      </div>
-
-      <div class="tip-card">
-        <div class="tip-title">⚠️ Evite</div>
-        <div class="tip-item">
-          <span class="icon">⬜</span>
-          <p><strong>Fundo branco ou brilhante</strong>Apaga o contraste. Se não tiver outro jeito, desative "Fundo preto/escuro" nos parâmetros.</p>
-        </div>
-        <div class="tip-item">
-          <span class="icon">📐</span>
-          <p><strong>Fotos na borda do scanner</strong>Ficam sem contraste em um lado e podem ser ignoradas ou cortadas errado.</p>
-        </div>
-      </div>
-
-      <div class="zip-card">
-        <div class="tip-title">📦 O que vem no ZIP</div>
-        Uma pasta por scan, com as fotos cortadas e um <strong>_preview.jpg</strong> mostrando o que foi detectado. Se algo saiu errado, abra o preview pra entender.
-        <code>scan_001/<br>&nbsp;&nbsp;_foto_01.jpg<br>&nbsp;&nbsp;_foto_02.jpg<br>&nbsp;&nbsp;_preview.jpg</code>
-      </div>
-
-    </aside>
   </div>
 
   <script>
